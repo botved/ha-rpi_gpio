@@ -71,8 +71,8 @@ def setup_platform(
         covers.append(
             RPiGPIOCover(
                 cover[CONF_NAME],
-                cover[CONF_RELAY_PIN],
-                cover[CONF_STATE_PIN],
+                cover[CONF_RELAY_PIN],    # CONF_RELAY_PIN is required
+                coverget(CONF_STATE_PIN), # CONF_STATE_PIN is optional
                 state_pull_mode,
                 relay_time,
                 invert_state,
@@ -108,12 +108,19 @@ class RPiGPIOCover(CoverEntity):
         self._invert_state = invert_state
         self._invert_relay = invert_relay
         setup_output(self._relay_pin)
-        setup_input(self._state_pin, self._state_pull_mode)
+        if self.has_state_pin:
+            setup_input(self._state_pin, self._state_pull_mode)
         write_output(self._relay_pin, 0 if self._invert_relay else 1)
 
     def update(self):
         """Update the state of the cover."""
-        self._state = read_input(self._state_pin)
+        if self.has_state_pin:
+            self._state = read_input(self._state_pin)
+
+    @property
+    def has_state_pin(self):
+        """Return true if state_pin is defined"""
+        return self._state_pin != None
 
     @property
     def is_closed(self):
@@ -128,10 +135,10 @@ class RPiGPIOCover(CoverEntity):
 
     def close_cover(self, **kwargs):
         """Close the cover."""
-        if not self.is_closed:
+        if not self.has_state_pin or not self.is_closed:
             self._trigger()
 
     def open_cover(self, **kwargs):
         """Open the cover."""
-        if self.is_closed:
+        if not self.has_state_pin or self.is_closed:
             self._trigger()
