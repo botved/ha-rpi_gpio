@@ -117,7 +117,7 @@ cover:
 | `invert_state`    | no       | `false` | boolean | Invert the value of the State pin so that 0 means closed                                                   |
 | `covers`          | yes      |         | list    | List of covers                                                                                             |
 | `relay_pin`       | yes      |         | integer | The pin of your Raspberry Pi where the relay is connected                                                  |
-| `state_pin`       | yes      |         | integer | The pin of your Raspberry Pi to retrieve the state                                                         |
+| `state_pin`       | no       |         | integer | The pin of your Raspberry Pi to retrieve the state                                                         |
 | `name`            | no       |         | string  | The name for the cover entity                                                                              |
 | `unique_id`       | no       |         | string  | An ID that uniquely identifies the cover. Set this to a unique value to allow customization through the UI |
 
