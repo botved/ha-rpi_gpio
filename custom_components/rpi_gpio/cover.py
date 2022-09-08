@@ -71,8 +71,8 @@ def setup_platform(
         covers.append(
             RPiGPIOCover(
                 cover[CONF_NAME],
-                cover[CONF_RELAY_PIN],    # CONF_RELAY_PIN is required
-                coverget(CONF_STATE_PIN), # CONF_STATE_PIN is optional
+                cover[CONF_RELAY_PIN],     # CONF_RELAY_PIN is required
+                cover.get(CONF_STATE_PIN), # CONF_STATE_PIN is optional
                 state_pull_mode,
                 relay_time,
                 invert_state,
